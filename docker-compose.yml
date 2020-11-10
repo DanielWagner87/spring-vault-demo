@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  vault:
+    image: vault:1.5.5
+    container_name: vault
+    restart: on-failure:3
+    ports:
+      - "8201:8201"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - "vaultlogs:/vault/logs"
+      - "vaultfile:/vault/file"
+    healthcheck:
+      retries: 5
+
+volumes:
+  vaultlogs:
+  vaultfile:

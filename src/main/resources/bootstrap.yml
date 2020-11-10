@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    vault:
+      uri: "http://localhost:8200"
+#      token: "00000000-0000-0000-0000-000000000000" # authenticate via token
+      kv:
+        enabled: true
+        default-context: "app-demo-2/dev-stage"
+      authentication: APPROLE
+      app-role:
+        role: spring-role
+        role-id: a5be238c-a3a5-372a-1c8a-59173cbb1634
+        secret-id: c63f1412-7090-c008-4802-a7c99c2c0bc8
+---
+spring:
+  profiles: "prod"
+  cloud:
+    vault:
+      kv:
+        default-context: "app-demo-2/prod-stage"
