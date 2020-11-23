@@ -1,6 +1,6 @@
 # Spring Cloud Vault
 
-## Local Setup
+## Local Setup mit http
 
 Für die Spring Boot Demo Applikation wird ein lokaler Vault benötigt. Für die Installation und Konfiguration sind bereits entsprechende Skripte vorhanden, die den Vault vorbereiten.
 
@@ -16,6 +16,81 @@ Zum Anlegen der Demo Secrets und Policies ist folgendes Skript auszuführen:
 
 ```bash
 setup/sample_data.sh
+```
+
+## Local Setup mit https
+
+### Serverzertifikat erstellen
+
+Zunächst ist das Root-Zertifikat zu erstellen:
+
+```bash
+cd setup-https/config/cert
+./create_root_cert.sh
+```
+
+Anschließend erfolgt die Erstellung des Zertifikats für die Domain (exemplarisch `localhost`):
+
+```bash
+cd setup-https/config/cert
+./create_domain_cert.sh {{ domain, e. g. localhost }}
+```
+
+### Zertifikat vertrauen
+
+In Firefox bspw. Folgendes tun:
+
+- Einstellungen > Datenschutz & Sicherheit
+- Ganz unten auf "Zertifikate anzeigen"
+- Zertifikat `root.pem` importieren
+
+### Vault starten
+
+Für die Spring Boot Demo Applikation wird ein lokaler Vault benötigt. Für die Installation und Konfiguration sind bereits entsprechende Skripte vorhanden, die den Vault vorbereiten.
+
+Dazu ist in einem Terminal zunächst folgendes Skript auszuführen:
+
+```bash
+setup-https/setup.sh
+```
+
+Dies lädt das Vault Binary herunter und startet den Vault Server im Dev Mode. Dazu wird die Config-Datei `setup-https/config/vault.hcl` benutzt.
+
+### Unseal
+
+Dazu sind folgende Kommandos auf der Konsole einzugeben:
+
+```bash
+export VAULT_ADDR=https://0.0.0.0:8200
+export VAULT_SKIP_VERIFY=true
+vault operator init
+```
+
+Das generiert 3 Unseal Keys sowie ein Initial Root Token. Das Root Token kann zum Login verwendet werden, sobald Vault unsealed ist.
+
+Mit den Keys kann Vault wie folgt unsealed werden:
+
+```bash
+vault operator unseal { key[0] }
+vault operator unseal { key[1] }
+vault operator unseal { key[2] }
+```
+
+Dabei kann jeweils ein beliebiger der 5 generierten Keys verwendet werden.
+
+### Beispieldaten
+
+Bevor die vorbereiteten Demodaten angelegt werden können, ist das generierte Root Token im Skript `setup-https/sample_data.sh` zu hinterlegen (Zeile 6):
+
+```bash
+export VAULT_TOKEN={ Root Token }
+```
+
+Anschließend kann das Skript ausgeführt werden:
+
+```bash
+cd setup-https
+./sample_data.sh
 ```
 
 ## Authentication

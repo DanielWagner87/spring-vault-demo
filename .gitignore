@@ -8,6 +8,12 @@ build/
 setup/download
 setup/vault
 setup/vault-volume
+setup-https/config/cert/rootCA.key
+setup-https/config/cert/rootCA.pem
+setup-https/config/cert/rootCA.srl
+setup-https/config/cert/server.crt
+setup-https/config/cert/server.csr
+setup-https/config/cert/server.key
 
 ### IntelliJ IDEA ###
 .idea

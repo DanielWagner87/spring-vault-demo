@@ -22,10 +22,6 @@ path "auth/*" {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
 
-path "auth/token/revoke-self" {
-  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
-}
-
 # Create, update, and delete auth methods
 path "sys/auth/*" {
   capabilities = ["create", "update", "delete", "sudo"]
@@ -53,10 +49,14 @@ path "sys/mounts" {
   capabilities = ["read"]
 }
 
-path "database/creds/spring-policy" {
-  capabilities = ["read"]
+# PKI stuff
+
+path "pki/issue/server" {
+  capabilities = [
+    "update"]
 }
 
-path "sys/revoke/database/creds/spring-policy/*" {
-  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+path "pki/ca*" {
+  capabilities = [
+    "read"]
 }

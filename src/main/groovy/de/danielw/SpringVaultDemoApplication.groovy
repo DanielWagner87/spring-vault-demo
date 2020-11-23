@@ -36,8 +36,8 @@ class SpringVaultDemoApplication implements CommandLineRunner {
 	void run(String... args) throws Exception {
 		readSecret()
 		listSecrets()
-		// writeSecret()
-		// deleteSecret()
+		writeSecret()
+		deleteSecret()
 	}
 
 	private void readSecret() {
